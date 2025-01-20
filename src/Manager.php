@@ -100,6 +100,7 @@ final class Manager
      */
     protected function connect()
     {
+        // @phpstan-ignore-next-line
         $resource = \ssh2_connect($this->host, $this->port, $this->methods, $this->callbacks);
         if ($resource === false) {
             throw new \Exception('Connection failed');
