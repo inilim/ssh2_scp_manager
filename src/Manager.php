@@ -12,13 +12,17 @@ final class Manager
     protected $username;
     /** @var string */
     protected $password;
-    /** @var ?array */
+    /** @var null|mixed[] */
     protected $methods;
-    /** @var ?array */
+    /** @var null|mixed[] */
     protected $callbacks;
     /** @var ?resource */
     protected $connect = null;
 
+    /**
+     * @param null|mixed[] $methods
+     * @param null|mixed[] $callbacks
+     */
     function __construct(
         string $host,
         string $username,
