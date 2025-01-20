@@ -1,0 +1,40 @@
+{
+  "name": "inilim/ssh2_tcp_manager",
+  "description": "",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Inilim\\Ssh2TcpManager\\": "src/"
+    },
+    "files": []
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Inilim\\Ssh2TcpManager\\Test\\": "Tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "inilim"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-ssh2": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require-dev": {
+    "phpstan/phpstan": "@stable",
+    "inilim/dump": "dev-main",
+    "phpunit/phpunit": "^11.5"
+  },
+  "scripts": {
+    "tests": [
+      "php vendor/bin/phpunit tests"
+    ],
+    "phpstan": [
+      "php vendor/bin/phpstan analyze"
+    ]
+  }
+}
