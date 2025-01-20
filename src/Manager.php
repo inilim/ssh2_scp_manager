@@ -65,6 +65,7 @@ final class Manager
     /**
      * @return void
      * @throws \Exception
+     * @phpstan-assert resource $this->connect
      */
     function init()
     {
@@ -78,6 +79,7 @@ final class Manager
      */
     function disconnect()
     {
+        if ($this->connect === null) return true;
         $status = \ssh2_disconnect($this->connect);
         $this->connect = null;
         return $status;
@@ -111,6 +113,9 @@ final class Manager
      */
     protected function auth()
     {
+        if ($this->connect === null) {
+            throw new \Exception('Authentication cannot be done before connection');
+        }
         $status = \ssh2_auth_password($this->connect, $this->username, $this->password);
         if (!$status) {
             throw new \Exception('Authentication failed');
