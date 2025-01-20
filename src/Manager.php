@@ -63,6 +63,17 @@ final class Manager
     }
 
     /**
+     * @return void
+     * @throws \Exception
+     */
+    function init()
+    {
+        if ($this->connect) return;
+        $this->connect();
+        $this->auth();
+    }
+
+    /**
      * @return bool
      */
     function disconnect()
@@ -83,6 +94,7 @@ final class Manager
 
     /**
      * @return void
+     * @throws \Exception
      */
     protected function connect()
     {
@@ -95,6 +107,7 @@ final class Manager
 
     /**
      * @return void
+     * @throws \Exception
      */
     protected function auth()
     {
@@ -102,15 +115,5 @@ final class Manager
         if (!$status) {
             throw new \Exception('Authentication failed');
         }
-    }
-
-    /**
-     * @return void
-     */
-    protected function init()
-    {
-        if ($this->connect) return;
-        $this->connect();
-        $this->auth();
     }
 }
