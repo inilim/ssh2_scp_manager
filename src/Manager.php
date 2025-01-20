@@ -18,6 +18,8 @@ final class Manager
     protected $callbacks;
     /** @var ?resource */
     protected $connect = null;
+    /** @var ?resource */
+    protected $sftp = null;
 
     /**
      * @param null|mixed[] $methods
@@ -63,6 +65,33 @@ final class Manager
     }
 
     /**
+     * @return string[]
+     */
+    function scandir(string $remoteDir)
+    {
+        $this->init();
+        $this->sftp();
+
+        $remoteDir = \rtrim($remoteDir, '/\\');
+
+        $files = \scandir('ssh2.sftp://' . $this->sftp . $remoteDir);
+
+        if ($files === false) {
+            throw new \Exception('');
+        }
+
+        foreach ($files as $idx => $file) {
+            if ($file === '.' || $file === '..') {
+                unset($files[$idx]);
+            } else {
+                $files[$idx] = $remoteDir . '/' . $file;
+            }
+        }
+
+        return $files;
+    }
+
+    /**
      * @return void
      * @throws \Exception
      * @phpstan-assert resource $this->connect
@@ -79,7 +108,7 @@ final class Manager
      */
     function disconnect()
     {
-        if ($this->connect === null) return true;
+        if (!$this->connect) return true;
         $status = \ssh2_disconnect($this->connect);
         $this->connect = null;
         return $status;
@@ -97,12 +126,30 @@ final class Manager
     /**
      * @return void
      * @throws \Exception
+     * @phpstan-assert resource $this->sftp
+     */
+    protected function sftp()
+    {
+        if ($this->sftp) return;
+        if (!$this->connect) {
+            throw new \Exception('Authentication cannot be done before connection');
+        }
+        $sftp = \ssh2_sftp($this->connect);
+        if (!$sftp) {
+            throw new \Exception('Unable to create SFTP connection.');
+        }
+        $this->sftp = $sftp;
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
      */
     protected function connect()
     {
         // @phpstan-ignore-next-line
         $resource = \ssh2_connect($this->host, $this->port, $this->methods, $this->callbacks);
-        if ($resource === false) {
+        if (!$resource) {
             throw new \Exception('Connection failed');
         }
         $this->connect = $resource;
@@ -114,7 +161,7 @@ final class Manager
      */
     protected function auth()
     {
-        if ($this->connect === null) {
+        if (!$this->connect) {
             throw new \Exception('Authentication cannot be done before connection');
         }
         $status = \ssh2_auth_password($this->connect, $this->username, $this->password);
