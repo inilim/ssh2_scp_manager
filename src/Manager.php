@@ -1,6 +1,6 @@
 <?php
 
-namespace Ssh2TcpManager;
+namespace Ssh2ScpManager;
 
 final class Manager
 {

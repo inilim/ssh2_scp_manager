@@ -1,16 +1,16 @@
 {
-  "name": "inilim/ssh2_tcp_manager",
+  "name": "inilim/ssh2_scp_manager",
   "description": "",
   "type": "library",
   "autoload": {
     "psr-4": {
-      "Inilim\\Ssh2TcpManager\\": "src/"
+      "Inilim\\Ssh2ScpManager\\": "src/"
     },
     "files": []
   },
   "autoload-dev": {
     "psr-4": {
-      "Inilim\\Ssh2TcpManager\\Test\\": "Tests/"
+      "Inilim\\Ssh2ScpManager\\Test\\": "Tests/"
     }
   },
   "authors": [
