@@ -88,7 +88,7 @@ final class Manager
             }
         }
 
-        return $files;
+        return \array_values($files);
     }
 
     /**
