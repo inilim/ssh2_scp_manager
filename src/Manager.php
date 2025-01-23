@@ -92,6 +92,17 @@ final class Manager
     }
 
     /**
+     * @return bool
+     */
+    function unlink(string $remoteFile)
+    {
+        $this->init();
+        $this->sftp();
+
+        return \ssh2_sftp_unlink($this->sftp, $remoteFile);
+    }
+
+    /**
      * @return void
      * @throws \Exception
      * @phpstan-assert resource $this->connect
