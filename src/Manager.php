@@ -74,10 +74,10 @@ final class Manager
 
         $remoteDir = \rtrim($remoteDir, '/\\');
 
-        $files = \scandir('ssh2.sftp://' . $this->sftp . $remoteDir);
+        $files = @\scandir('ssh2.sftp://' . $this->sftp . $remoteDir);
 
         if ($files === false) {
-            throw new \Exception('');
+            throw new \Exception('Remote dir not found');
         }
 
         foreach ($files as $idx => $file) {
@@ -89,6 +89,17 @@ final class Manager
         }
 
         return \array_values($files);
+    }
+
+    /**
+     * @return bool
+     */
+    function existsFile(string $pathToFile)
+    {
+        $this->init();
+        $this->sftp();
+
+        return \file_exists('ssh2.sftp://' . $this->sftp . $pathToFile);
     }
 
     /**
