@@ -26,9 +26,13 @@ final class Manager
      * @param null|mixed[] $callbacks
      */
     function __construct(
+        #[\SensitiveParameter]
         string $host,
+        #[\SensitiveParameter]
         string $username,
+        #[\SensitiveParameter]
         string $password,
+        #[\SensitiveParameter]
         int $port         = 22,
         ?array $methods   = null,
         ?array $callbacks = null
